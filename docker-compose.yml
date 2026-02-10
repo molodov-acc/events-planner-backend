@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    container_name: events-api
+    ports:
+      - '127.0.0.1:8080:8080' # NestJS доступен только локально, через Nginx
+    env_file:
+      - .env.production
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: events-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: events_planner
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
